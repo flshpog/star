@@ -1,4 +1,5 @@
 const { Events, REST, Routes } = require('discord.js');
+const { startPeriodicCheck } = require('../handlers/stickyManager.js');
 
 module.exports = {
     name: Events.ClientReady,
@@ -28,5 +29,8 @@ module.exports = {
         }
 
         client.user.setActivity('★');
+
+        // re-post stickies that have drifted from the bottom of their channel
+        startPeriodicCheck(client);
     },
 };

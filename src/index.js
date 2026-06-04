@@ -3,10 +3,23 @@ const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 
-// Slash commands only, so we just need the Guilds intent (no privileged intents).
+const Model = require('./classes/DatabaseModel');
+const { applyDefaults } = require('./database_schema');
+
+// Only non-privileged intents are needed:
+//  - Guilds:        slash commands, roles, channels
+//  - GuildMessages: XP gain (counts that a message was sent) + sticky re-posting
+// XP/stickies do NOT read message content, so no MessageContent intent; member
+// data comes from interaction payloads, so no GuildMembers intent either.
 const client = new Client({
-    intents: [GatewayIntentBits.Guilds],
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+    ],
 });
+
+// JSON data store for the XP engine (servers.json). Same shape as sylvia.
+client.db = new Model('servers', applyDefaults);
 
 // Load slash commands from src/commands/<category>/<name>.js
 client.commands = new Collection();

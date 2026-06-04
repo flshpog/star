@@ -1,7 +1,7 @@
 {
     "name": "star-bot",
     "version": "1.0.0",
-    "description": "★ — a simple Discord utility bot",
+    "description": "★ — Song of Luck competition bot with XP, stickies, and moderation",
     "main": "src/index.js",
     "scripts": {
         "start": "node src/index.js",
