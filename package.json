@@ -1,0 +1,18 @@
+{
+    "name": "star-bot",
+    "version": "1.0.0",
+    "description": "★ — a simple Discord utility bot",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "node src/index.js",
+        "dev": "nodemon src/index.js"
+    },
+    "dependencies": {
+        "discord.js": "^14.16.3",
+        "dotenv": "^16.4.5"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.7"
+    },
+    "license": "MIT"
+}
