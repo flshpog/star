@@ -31,7 +31,7 @@ All embeds use a minimal white (`#ffffff`) style with no emoji.
 
 **Moderation** — `/ban` `/kick` `/timeout` `/untimeout` `/warn` `/warnings` `/delwarn` `/purge` `/rmute` `/unmute` `/modconfig`
 
-**Sticky / utility** — `/sticky` and `/ping` `/choose` `/userinfo` `/serverinfo` `/say` `/avatar`
+**Sticky / utility** — `/sticky` `/cmds` (lists every command) and `/ping` `/choose` `/userinfo` `/serverinfo` `/say` `/avatar`
 
 ## Setup
 1. Install [Node.js](https://nodejs.org/) (v18+), then run `npm install`.
