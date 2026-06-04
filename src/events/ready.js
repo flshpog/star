@@ -13,17 +13,20 @@ module.exports = {
 
         try {
             if (process.env.GUILD_ID) {
-                // Guild commands update instantly — great for testing.
+                // single-server bot: register to the guild only (updates instantly).
                 await rest.put(
                     Routes.applicationGuildCommands(clientId, process.env.GUILD_ID),
                     { body: commands },
                 );
                 console.log(`Registered ${commands.length} commands to guild ${process.env.GUILD_ID}.`);
-            }
 
-            // Global commands (first registration can take up to ~1h to show up).
-            await rest.put(Routes.applicationCommands(clientId), { body: commands });
-            console.log(`Registered ${commands.length} global commands.`);
+                // clear any global commands so they don't show up as duplicates.
+                await rest.put(Routes.applicationCommands(clientId), { body: [] });
+            } else {
+                // no guild set: fall back to global (first registration can take ~1h).
+                await rest.put(Routes.applicationCommands(clientId), { body: commands });
+                console.log(`Registered ${commands.length} global commands.`);
+            }
         } catch (error) {
             console.error('Error registering slash commands:', error);
         }
