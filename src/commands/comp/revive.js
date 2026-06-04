@@ -5,9 +5,9 @@ const { getGame, setGame } = require('../../handlers/competition.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('revive')
-        .setDescription('Bring an eliminated player back into the competition.')
+        .setDescription('bring an eliminated player back into the competition.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-        .addUserOption(o => o.setName('player').setDescription('The player to revive').setRequired(true)),
+        .addUserOption(o => o.setName('player').setDescription('the player to revive').setRequired(true)),
 
     async execute(interaction) {
         const int = interaction;
@@ -17,13 +17,13 @@ module.exports = {
         const user = int.options.getUser('player');
         const player = game.players[user.id];
 
-        if (!player) return tools.warn("That player has never been in the competition.");
-        if (player.active) return tools.warn("That player is already active.");
+        if (!player) return tools.warn("that player has never been in the competition.");
+        if (player.active) return tools.warn("that player is already active.");
 
         player.active = true;
         player.eliminatedRound = null;
         setGame(int.guild.id, game);
 
-        return int.reply({ content: `Revived <@${user.id}>. They're back in the game.`, ephemeral: true });
+        return int.reply({ content: `revived <@${user.id}>. they're back in the game.`, ephemeral: true });
     }
 };

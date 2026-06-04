@@ -29,11 +29,11 @@ class Tools {
 
         // common error messages
         this.errors = {
-            xpDisabled: `XP is not enabled in this server!${this.canManageServer() ? ` (enable with ${this.commandTag("xpconfig")})` : ""}`,
-            noData: "This server doesn't have any data yet!",
-            noBotXP: "Bots can't earn XP, silly!",
-            cantManageRoles: "I don't have permission to manage roles!",
-            notMod: "You don't have permission to use this command!"
+            xpDisabled: `xp is not enabled in this server!${this.canManageServer() ? ` (enable with ${this.commandTag("xpconfig")})` : ""}`,
+            noData: "this server doesn't have any data yet!",
+            noBotXP: "bots can't earn xp, silly!",
+            cantManageRoles: "i don't have permission to manage roles!",
+            notMod: "you don't have permission to use this command!"
         }
 
         // fetch settings from db (+ a user's xp), creating the server doc if missing
@@ -184,7 +184,7 @@ class Tools {
 
         // error message if user has no xp
         this.noXPYet = function(user) {
-            return this.warn(user.bot ? "*noBotXP" : user.id != int.user.id ? `${user.displayName} doesn't have any XP yet!` : `You don't have any XP yet!`)
+            return this.warn(user.bot ? "*noBotXP" : user.id != int.user.id ? `${user.displayName} doesn't have any xp yet!` : `you don't have any xp yet!`)
         }
 
         // create an embed from an object (always white)
@@ -299,7 +299,7 @@ class Tools {
         // convert timestamp to neat string (e.g. "3 minutes")
         this.time = function(ms, decimals=0, noS, shortTime) {
             let commafy = this.commafy
-            if (ms > 3e16) return "Forever"
+            if (ms > 3e16) return "forever"
             function timeFormat(amount, str) {
                 amount = +amount
                 return `${commafy(amount)} ${str}${noS || amount == 1 ? "" : "s"}`

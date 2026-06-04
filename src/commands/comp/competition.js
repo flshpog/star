@@ -5,13 +5,13 @@ const { getGame, setGame } = require('../../handlers/competition.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('competition')
-        .setDescription('Configure the Song of Luck competition.')
+        .setDescription('configure the song of luck competition.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-        .addSubcommand(s => s.setName('setup').setDescription('Set the competition channels and signup state')
-            .addChannelOption(o => o.setName('judge_channel').setDescription("Private channel where submissions are posted").addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement))
-            .addChannelOption(o => o.setName('announce_channel').setDescription('Channel for themes, rounds and eliminations').addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement))
-            .addBooleanOption(o => o.setName('signups').setDescription('Whether players can /signup')))
-        .addSubcommand(s => s.setName('view').setDescription('View the current competition configuration')),
+        .addSubcommand(s => s.setName('setup').setDescription('set the competition channels and signup state')
+            .addChannelOption(o => o.setName('judge_channel').setDescription("private channel where submissions are posted").addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement))
+            .addChannelOption(o => o.setName('announce_channel').setDescription('channel for themes, rounds and eliminations').addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement))
+            .addBooleanOption(o => o.setName('signups').setDescription('whether players can /signup')))
+        .addSubcommand(s => s.setName('view').setDescription('view the current competition configuration')),
 
     async execute(interaction) {
         const int = interaction;
@@ -30,11 +30,11 @@ module.exports = {
             setGame(int.guild.id, game);
 
             const embed = tools.createEmbed({
-                title: 'Competition updated',
+                title: 'competition updated',
                 fields: [
-                    { name: 'Judges channel', value: game.judgeChannel ? `<#${game.judgeChannel}>` : 'Not set', inline: true },
-                    { name: 'Announce channel', value: game.announceChannel ? `<#${game.announceChannel}>` : 'Not set', inline: true },
-                    { name: 'Signups', value: game.signupsOpen ? 'Open' : 'Closed', inline: true },
+                    { name: 'judges channel', value: game.judgeChannel ? `<#${game.judgeChannel}>` : 'not set', inline: true },
+                    { name: 'announce channel', value: game.announceChannel ? `<#${game.announceChannel}>` : 'not set', inline: true },
+                    { name: 'signups', value: game.signupsOpen ? 'open' : 'closed', inline: true },
                 ]
             });
             return int.reply({ embeds: [embed], ephemeral: true });
@@ -43,14 +43,14 @@ module.exports = {
         // view
         const active = Object.values(game.players).filter(p => p.active).length;
         const embed = tools.createEmbed({
-            author: { name: `Song of Luck — ${int.guild.name}`, iconURL: int.guild.iconURL() },
+            author: { name: `song of luck — ${int.guild.name}`, iconURL: int.guild.iconURL() },
             fields: [
-                { name: 'Round', value: `${game.round}`, inline: true },
-                { name: 'Theme', value: game.theme || 'Not set', inline: true },
-                { name: 'Signups', value: game.signupsOpen ? 'Open' : 'Closed', inline: true },
-                { name: 'Judges channel', value: game.judgeChannel ? `<#${game.judgeChannel}>` : 'Not set', inline: true },
-                { name: 'Announce channel', value: game.announceChannel ? `<#${game.announceChannel}>` : 'Not set', inline: true },
-                { name: 'Active players', value: `${active}`, inline: true },
+                { name: 'round', value: `${game.round}`, inline: true },
+                { name: 'theme', value: game.theme || 'not set', inline: true },
+                { name: 'signups', value: game.signupsOpen ? 'open' : 'closed', inline: true },
+                { name: 'judges channel', value: game.judgeChannel ? `<#${game.judgeChannel}>` : 'not set', inline: true },
+                { name: 'announce channel', value: game.announceChannel ? `<#${game.announceChannel}>` : 'not set', inline: true },
+                { name: 'active players', value: `${active}`, inline: true },
             ]
         });
         return int.reply({ embeds: [embed], ephemeral: true });

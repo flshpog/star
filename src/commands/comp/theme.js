@@ -5,10 +5,10 @@ const { getGame, setGame, announce } = require('../../handlers/competition.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('theme')
-        .setDescription('Set the theme for the current round.')
+        .setDescription('set the theme for the current round.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-        .addStringOption(o => o.setName('text').setDescription('The round theme').setRequired(true))
-        .addBooleanOption(o => o.setName('announce').setDescription('Post the theme in the announce channel (default: yes)')),
+        .addStringOption(o => o.setName('text').setDescription('the round theme').setRequired(true))
+        .addBooleanOption(o => o.setName('announce').setDescription('post the theme in the announce channel (default: yes)')),
 
     async execute(interaction) {
         const int = interaction;
@@ -22,12 +22,12 @@ module.exports = {
         const shouldAnnounce = int.options.get('announce')?.value ?? true;
         if (shouldAnnounce) {
             const embed = tools.createEmbed({
-                title: `Round ${game.round} theme`,
+                title: `round ${game.round} theme`,
                 description: text
             });
             await announce(int.guild, game.announceChannel, { embeds: [embed] });
         }
 
-        return int.reply({ content: `Round ${game.round} theme set to: **${text}**`, ephemeral: true });
+        return int.reply({ content: `round ${game.round} theme set to: **${text}**`, ephemeral: true });
     }
 };

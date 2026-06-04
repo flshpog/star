@@ -4,16 +4,16 @@ const Tools = require('../../classes/Tools.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('multiplier')
-        .setDescription('Add or remove an XP multiplier.')
+        .setDescription('add or remove an xp multiplier.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-        .addSubcommand(sub => sub.setName('role').setDescription('Add or remove a role multiplier')
-            .addRoleOption(o => o.setName('role_name').setDescription('The role to add a multiplier for').setRequired(true))
-            .addNumberOption(o => o.setName('multiplier').setDescription('Multiply XP gain by this amount (0.5, 2, etc), or 0 to disable XP gain').setMinValue(0).setMaxValue(100).setRequired(true))
-            .addBooleanOption(o => o.setName('remove').setDescription('Removes this multiplier, if it exists')))
-        .addSubcommand(sub => sub.setName('channel').setDescription('Add or remove a channel multiplier')
-            .addChannelOption(o => o.setName('channel_name').setDescription('The channel or category to add a multiplier for').setRequired(true))
-            .addNumberOption(o => o.setName('multiplier').setDescription('Multiply XP gain by this amount (0.5, 2, etc), or 0 to disable XP gain').setMinValue(0).setMaxValue(100).setRequired(true))
-            .addBooleanOption(o => o.setName('remove').setDescription('Removes this multiplier, if it exists'))),
+        .addSubcommand(sub => sub.setName('role').setDescription('add or remove a role multiplier')
+            .addRoleOption(o => o.setName('role_name').setDescription('the role to add a multiplier for').setRequired(true))
+            .addNumberOption(o => o.setName('multiplier').setDescription('multiply xp gain by this amount (0.5, 2, etc), or 0 to disable xp gain').setMinValue(0).setMaxValue(100).setRequired(true))
+            .addBooleanOption(o => o.setName('remove').setDescription('removes this multiplier, if it exists')))
+        .addSubcommand(sub => sub.setName('channel').setDescription('add or remove a channel multiplier')
+            .addChannelOption(o => o.setName('channel_name').setDescription('the channel or category to add a multiplier for').setRequired(true))
+            .addNumberOption(o => o.setName('multiplier').setDescription('multiply xp gain by this amount (0.5, 2, etc), or 0 to disable xp gain').setMinValue(0).setMaxValue(100).setRequired(true))
+            .addBooleanOption(o => o.setName('remove').setDescription('removes this multiplier, if it exists'))),
 
     async execute(interaction) {
         const int = interaction;
@@ -51,16 +51,16 @@ module.exports = {
         }
 
         if (remove) {
-            if (!foundExisting) return tools.warn(`This ${type} never had a multiplier to begin with!`);
-            return finish(`Deleted ${foundExisting.boost}x multiplier for ${tag}.`);
+            if (!foundExisting) return tools.warn(`this ${type} never had a multiplier to begin with!`);
+            return finish(`deleted ${foundExisting.boost}x multiplier for ${tag}.`);
         }
 
         let boostData = { id: target.id, boost };
         newList[typeIndex].push(boostData);
-        let boostStr = boost == 0 ? "no XP" : `${boost}x XP`;
+        let boostStr = boost == 0 ? "no xp" : `${boost}x xp`;
 
         if (foundExisting) {
-            if (foundExisting.boost == boost) return tools.warn(`This ${type} already gives a ${boost}x multiplier!`);
+            if (foundExisting.boost == boost) return tools.warn(`this ${type} already gives a ${boost}x multiplier!`);
             return finish(`${tag} now gives ${boostStr}! (previously ${foundExisting.boost}x)`);
         }
 

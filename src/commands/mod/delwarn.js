@@ -5,10 +5,10 @@ const { removeWarning } = require('../../handlers/modData.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('delwarn')
-        .setDescription("Remove one of a member's warnings.")
+        .setDescription("remove one of a member's warnings.")
         .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
-        .addUserOption(o => o.setName('user').setDescription('The member').setRequired(true))
-        .addIntegerOption(o => o.setName('number').setDescription('Which warning to remove (see /warnings)').setMinValue(1).setRequired(true)),
+        .addUserOption(o => o.setName('user').setDescription('the member').setRequired(true))
+        .addIntegerOption(o => o.setName('number').setDescription('which warning to remove (see /warnings)').setMinValue(1).setRequired(true)),
 
     async execute(interaction) {
         const int = interaction;
@@ -18,13 +18,13 @@ module.exports = {
         const index = int.options.getInteger('number') - 1;
 
         const removed = removeWarning(int.guild.id, user.id, index);
-        if (!removed) return tools.warn("That warning number doesn't exist. Check /warnings.");
+        if (!removed) return tools.warn("that warning number doesn't exist. check /warnings.");
 
         const embed = tools.createEmbed({
-            title: 'Warning removed',
-            description: `Removed warning #${index + 1} from **${user.tag}**.`,
-            fields: [{ name: 'Was', value: removed.reason }],
-            footer: `Moderator: ${int.user.tag}`
+            title: 'warning removed',
+            description: `removed warning #${index + 1} from **${user.tag}**.`,
+            fields: [{ name: 'was', value: removed.reason }],
+            footer: `moderator: ${int.user.tag}`
         });
         return int.reply({ embeds: [embed], ephemeral: true });
     }

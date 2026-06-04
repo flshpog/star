@@ -4,12 +4,12 @@ const Tools = require('../../classes/Tools.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('rewardrole')
-        .setDescription('Add or remove a reward role.')
+        .setDescription('add or remove a reward role.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-        .addRoleOption(o => o.setName('role_name').setDescription('The role to add or remove').setRequired(true))
-        .addIntegerOption(o => o.setName('level').setDescription('The level to grant the role at, or 0 to remove').setMinValue(0).setMaxValue(1000).setRequired(true))
-        .addBooleanOption(o => o.setName('keep').setDescription('Keep this role even when a higher one is reached'))
-        .addBooleanOption(o => o.setName('dont_sync').setDescription('Advanced: ignore this role when syncing roles')),
+        .addRoleOption(o => o.setName('role_name').setDescription('the role to add or remove').setRequired(true))
+        .addIntegerOption(o => o.setName('level').setDescription('the level to grant the role at, or 0 to remove').setMinValue(0).setMaxValue(1000).setRequired(true))
+        .addBooleanOption(o => o.setName('keep').setDescription('keep this role even when a higher one is reached'))
+        .addBooleanOption(o => o.setName('dont_sync').setDescription('advanced: ignore this role when syncing roles')),
 
     async execute(interaction) {
         const int = interaction;
@@ -38,12 +38,12 @@ module.exports = {
         }
 
         if (level == 0) {
-            if (!foundExisting) return tools.warn("Reward roles can't be granted at level 0! Use this to delete existing reward roles.");
-            return finish(`Deleted reward role <@&${role.id}> for level ${foundExisting.level}.`);
+            if (!foundExisting) return tools.warn("reward roles can't be granted at level 0! use this to delete existing reward roles.");
+            return finish(`deleted reward role <@&${role.id}> for level ${foundExisting.level}.`);
         }
 
         if (!int.guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles)) return tools.warn("*cantManageRoles");
-        if (!role.editable) return tools.warn(`I don't have permission to grant <@&${role.id}>!`);
+        if (!role.editable) return tools.warn(`i don't have permission to grant <@&${role.id}>!`);
 
         let roleData = { id: role.id, level };
         let extraStrings = [];
@@ -54,7 +54,7 @@ module.exports = {
         let extraStr = (extraStrings.length < 1) ? "" : ` (${extraStrings.join(", ")})`;
 
         if (foundExisting) {
-            if (foundExisting.level == level) return tools.warn(`This role is already granted at level ${level}!`);
+            if (foundExisting.level == level) return tools.warn(`this role is already granted at level ${level}!`);
             return finish(`<@&${role.id}> will now be granted at level ${level}! (previously ${foundExisting.level})${extraStr}`);
         }
 

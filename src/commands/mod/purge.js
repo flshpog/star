@@ -3,9 +3,9 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('purge')
-        .setDescription('Delete a number of recent messages from this channel.')
+        .setDescription('delete a number of recent messages from this channel.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
-        .addIntegerOption(o => o.setName('amount').setDescription('How many messages to delete (1-1000)').setMinValue(1).setMaxValue(1000).setRequired(true)),
+        .addIntegerOption(o => o.setName('amount').setDescription('how many messages to delete (1-1000)').setMinValue(1).setMaxValue(1000).setRequired(true)),
 
     async execute(interaction) {
         const amount = interaction.options.getInteger('amount');
@@ -31,12 +31,12 @@ module.exports = {
                 if (deleted.size < deleteAmount) break;
             }
 
-            await interaction.editReply(`Deleted **${deletedCount}** message${deletedCount !== 1 ? 's' : ''}.${deletedCount < amount ? ' (Messages older than 14 days can\'t be bulk-deleted.)' : ''}`);
+            await interaction.editReply(`deleted **${deletedCount}** message${deletedCount !== 1 ? 's' : ''}.${deletedCount < amount ? ' (messages older than 14 days can\'t be bulk-deleted.)' : ''}`);
         } catch (e) {
-            let msg = 'Failed to delete messages. ';
-            if (e.code === 50013) msg += "I don't have permission to manage messages here.";
-            else if (e.code === 50001) msg += "I don't have access to this channel.";
-            else msg += 'Check that I have the necessary permissions.';
+            let msg = 'failed to delete messages. ';
+            if (e.code === 50013) msg += "i don't have permission to manage messages here.";
+            else if (e.code === 50001) msg += "i don't have access to this channel.";
+            else msg += 'check that i have the necessary permissions.';
             await interaction.editReply(msg);
         }
     }

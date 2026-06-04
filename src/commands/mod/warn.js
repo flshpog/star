@@ -5,10 +5,10 @@ const { addWarning } = require('../../handlers/modData.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('warn')
-        .setDescription('Warn a member.')
+        .setDescription('warn a member.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
-        .addUserOption(o => o.setName('user').setDescription('The member to warn').setRequired(true))
-        .addStringOption(o => o.setName('reason').setDescription('Reason for the warning').setRequired(true)),
+        .addUserOption(o => o.setName('user').setDescription('the member to warn').setRequired(true))
+        .addStringOption(o => o.setName('reason').setDescription('reason for the warning').setRequired(true)),
 
     async execute(interaction) {
         const int = interaction;
@@ -17,22 +17,22 @@ module.exports = {
         const user = int.options.getUser('user');
         const reason = int.options.getString('reason');
 
-        if (user.bot) return tools.warn("You can't warn a bot.");
-        if (user.id === int.user.id) return tools.warn("You can't warn yourself!");
+        if (user.bot) return tools.warn("you can't warn a bot.");
+        if (user.id === int.user.id) return tools.warn("you can't warn yourself!");
 
         const list = addWarning(int.guild.id, user.id, { mod: int.user.id, reason, at: Date.now() });
 
         // try to notify the user
-        await user.send(`You were warned in **${int.guild.name}**: ${reason}`).catch(() => {});
+        await user.send(`you were warned in **${int.guild.name}**: ${reason}`).catch(() => {});
 
         const embed = tools.createEmbed({
-            title: 'Member warned',
+            title: 'member warned',
             description: `**${user.tag}** was warned.`,
             fields: [
-                { name: 'Reason', value: reason, inline: true },
-                { name: 'Total warnings', value: `${list.length}`, inline: true }
+                { name: 'reason', value: reason, inline: true },
+                { name: 'total warnings', value: `${list.length}`, inline: true }
             ],
-            footer: `Moderator: ${int.user.tag}`
+            footer: `moderator: ${int.user.tag}`
         });
         return int.reply({ embeds: [embed] });
     }

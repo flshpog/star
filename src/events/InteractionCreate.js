@@ -15,7 +15,7 @@ module.exports = {
                 await command.execute(interaction);
             } catch (error) {
                 console.error(`Error executing ${interaction.commandName}:`, error);
-                const reply = { content: 'There was an error while executing this command!', ephemeral: true };
+                const reply = { content: 'there was an error while executing this command!', ephemeral: true };
                 if (interaction.replied || interaction.deferred) await interaction.followUp(reply).catch(() => {});
                 else await interaction.reply(reply).catch(() => {});
             }
@@ -32,7 +32,7 @@ module.exports = {
                     } catch (error) {
                         console.error('Error handling sticky modal:', error);
                         if (!interaction.replied && !interaction.deferred) {
-                            await interaction.reply({ content: 'There was an error processing the sticky.', ephemeral: true }).catch(() => {});
+                            await interaction.reply({ content: 'there was an error processing the sticky.', ephemeral: true }).catch(() => {});
                         }
                     }
                 }

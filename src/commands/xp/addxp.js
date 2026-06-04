@@ -4,15 +4,15 @@ const Tools = require('../../classes/Tools.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('addxp')
-        .setDescription('Add or remove XP from a member.')
+        .setDescription('add or remove xp from a member.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-        .addUserOption(o => o.setName('member').setDescription('Which member to modify').setRequired(true))
-        .addIntegerOption(o => o.setName('xp').setDescription('How much XP to add (negative number to remove XP)').setMinValue(-1e10).setMaxValue(1e10).setRequired(true))
-        .addStringOption(o => o.setName('operation').setDescription('How the XP amount should be interpreted').addChoices(
-            { name: 'Add XP', value: 'add_xp' },
-            { name: 'Set XP to', value: 'set_xp' },
-            { name: 'Add levels', value: 'add_level' },
-            { name: 'Set level to', value: 'set_level' },
+        .addUserOption(o => o.setName('member').setDescription('which member to modify').setRequired(true))
+        .addIntegerOption(o => o.setName('xp').setDescription('how much xp to add (negative number to remove xp)').setMinValue(-1e10).setMaxValue(1e10).setRequired(true))
+        .addStringOption(o => o.setName('operation').setDescription('how the xp amount should be interpreted').addChoices(
+            { name: 'add xp', value: 'add_xp' },
+            { name: 'set xp to', value: 'set_xp' },
+            { name: 'add levels', value: 'add_level' },
+            { name: 'set level to', value: 'set_level' },
         )),
 
     async execute(interaction) {
@@ -25,15 +25,15 @@ module.exports = {
         const operation = int.options.get("operation")?.value || "add_xp";
 
         let user = member?.user;
-        if (!user) return tools.warn("I couldn't find that member!");
+        if (!user) return tools.warn("i couldn't find that member!");
 
         let db = await tools.fetchSettings(user.id);
         if (!db) return tools.warn("*noData");
         else if (!tools.canManageServer(int.member, db.settings.manualPerms)) return tools.warn("*notMod");
         else if (!db.settings.enabled) return tools.warn("*xpDisabled");
 
-        if (amount === 0 && operation.startsWith("add")) return tools.warn("Invalid amount of XP!");
-        else if (user.bot) return tools.warn("You can't give XP to bots, silly!");
+        if (amount === 0 && operation.startsWith("add")) return tools.warn("invalid amount of xp!");
+        else if (user.bot) return tools.warn("you can't give xp to bots, silly!");
 
         let currentXP = db.users[user.id];
         let xp = currentXP?.xp || 0;
@@ -63,7 +63,7 @@ module.exports = {
         let xpDiff = newXP - xp;
 
         client.db.update(int.guild.id, { $set: { [`users.${user.id}.xp`]: newXP } }).then(() => {
-            int.reply(`${user.displayName} now has **${tools.commafy(newXP)}** XP${newLevel != level ? ` and is **level ${newLevel}**` : ""}! (previously ${tools.commafy(xp)}, ${xpDiff >= 0 ? "+" : ""}${tools.commafy(xpDiff)})`);
-        }).catch(() => tools.warn("Something went wrong while trying to modify XP!"));
+            int.reply(`${user.displayName} now has **${tools.commafy(newXP)}** xp${newLevel != level ? ` and is **level ${newLevel}**` : ""}! (previously ${tools.commafy(xp)}, ${xpDiff >= 0 ? "+" : ""}${tools.commafy(xpDiff)})`);
+        }).catch(() => tools.warn("something went wrong while trying to modify xp!"));
     }
 };

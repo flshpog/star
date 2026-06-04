@@ -5,9 +5,9 @@ const { getWarnings } = require('../../handlers/modData.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('warnings')
-        .setDescription("View a member's warnings.")
+        .setDescription("view a member's warnings.")
         .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
-        .addUserOption(o => o.setName('user').setDescription('The member to look up').setRequired(true)),
+        .addUserOption(o => o.setName('user').setDescription('the member to look up').setRequired(true)),
 
     async execute(interaction) {
         const int = interaction;
@@ -22,7 +22,7 @@ module.exports = {
 
         const lines = list.map((w, i) => `**${i + 1}.** ${w.reason} — by <@${w.mod}> <t:${Math.floor(w.at / 1000)}:R>`);
         const embed = tools.createEmbed({
-            author: { name: `Warnings for ${user.tag}`, iconURL: user.displayAvatarURL() },
+            author: { name: `warnings for ${user.tag}`, iconURL: user.displayAvatarURL() },
             description: lines.join('\n'),
             footer: `${list.length} warning${list.length !== 1 ? 's' : ''} • remove with /delwarn`
         });

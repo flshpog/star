@@ -3,10 +3,10 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('choose')
-        .setDescription('Randomly pick from a list of options')
+        .setDescription('randomly pick from a list of options')
         .addStringOption(option =>
             option.setName('options')
-                .setDescription('Options separated by commas (e.g. "pizza, pasta, burgers")')
+                .setDescription('options separated by commas (e.g. "pizza, pasta, burgers")')
                 .setRequired(true)),
 
     async execute(interaction) {
@@ -16,10 +16,10 @@ module.exports = {
             .filter(Boolean);
 
         if (options.length < 2) {
-            return interaction.reply({ content: 'Give me at least 2 options to choose from.', ephemeral: true });
+            return interaction.reply({ content: 'give me at least 2 options to choose from.', ephemeral: true });
         }
 
         const choice = options[Math.floor(Math.random() * options.length)];
-        await interaction.reply(`🎲 I choose: **${choice}**`);
+        await interaction.reply(`🎲 i choose: **${choice}**`);
     },
 };

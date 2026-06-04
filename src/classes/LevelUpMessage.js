@@ -181,7 +181,7 @@ class LevelUpMessage {
             : await this.userMessage.guild.channels.fetch(sendChannel).catch(() => {})
 
         if (ch && ch.id) ch.send(this.msg).catch((e) => {
-            ch.send(`Error sending level up message!\n\`\`\`${e.message}\`\`\`\n(anyways, congrats on level ${this.variables.LEVEL}!)`).catch(() => {})
+            ch.send(`error sending level up message!\n\`\`\`${e.message}\`\`\`\n(anyways, congrats on level ${this.variables.LEVEL}!)`).catch(() => {})
         })
     }
 }

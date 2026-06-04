@@ -5,16 +5,16 @@ const Tools = require('../../classes/Tools.js');
 
 // category folder -> display name, in the order they should appear
 const CATEGORIES = [
-    ['comp', 'Song of Luck'],
-    ['xp', 'XP'],
-    ['mod', 'Moderation'],
-    ['util', 'Utility'],
+    ['comp', 'song of luck'],
+    ['xp', 'xp'],
+    ['mod', 'moderation'],
+    ['util', 'utility'],
 ];
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('cmds')
-        .setDescription('List every command and what it does.'),
+        .setDescription('list every command and what it does.'),
 
     async execute(interaction) {
         const int = interaction;

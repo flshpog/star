@@ -4,9 +4,9 @@ const Tools = require('../../classes/Tools.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('clear')
-        .setDescription("Clear a member's XP cooldown.")
+        .setDescription("clear a member's xp cooldown.")
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-        .addUserOption(o => o.setName('member').setDescription('Which member to clear').setRequired(true)),
+        .addUserOption(o => o.setName('member').setDescription('which member to clear').setRequired(true)),
 
     async execute(interaction) {
         const int = interaction;
@@ -20,14 +20,14 @@ module.exports = {
         else if (!tools.canManageServer(int.member, db.settings.manualPerms)) return tools.warn("*notMod");
         else if (!db.settings.enabled) return tools.warn("*xpDisabled");
 
-        if (user.bot) return tools.warn("Bots don't have cooldowns, silly!");
+        if (user.bot) return tools.warn("bots don't have cooldowns, silly!");
 
         let current = db.users[user.id];
         let cooldown = current?.cooldown;
-        if (!cooldown || cooldown <= Date.now()) return tools.warn("This member doesn't have an active cooldown!");
+        if (!cooldown || cooldown <= Date.now()) return tools.warn("this member doesn't have an active cooldown!");
 
         client.db.update(int.guild.id, { $set: { [`users.${user.id}.cooldown`]: 0 } }).then(() => {
             int.reply(`${tools.pluralS(user.displayName)} cooldown has been reset! (previously ${tools.timestamp(cooldown - Date.now())})`);
-        }).catch(() => tools.warn("Something went wrong while trying to reset the cooldown!"));
+        }).catch(() => tools.warn("something went wrong while trying to reset the cooldown!"));
     }
 };

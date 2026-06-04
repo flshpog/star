@@ -3,11 +3,11 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('serverinfo')
-        .setDescription('Show information about this server'),
+        .setDescription('show information about this server'),
 
     async execute(interaction) {
         if (!interaction.guild) {
-            return interaction.reply({ content: 'Use this command in a server.', ephemeral: true });
+            return interaction.reply({ content: 'use this command in a server.', ephemeral: true });
         }
 
         const { guild } = interaction;
@@ -18,14 +18,14 @@ module.exports = {
             .setThumbnail(guild.iconURL({ size: 256 }))
             .setColor(0x5865f2)
             .addFields(
-                { name: 'Owner', value: owner.user.tag, inline: true },
-                { name: 'Members', value: `${guild.memberCount}`, inline: true },
-                { name: 'Channels', value: `${guild.channels.cache.size}`, inline: true },
-                { name: 'Roles', value: `${guild.roles.cache.size}`, inline: true },
-                { name: 'Boosts', value: `${guild.premiumSubscriptionCount ?? 0}`, inline: true },
-                { name: 'Created', value: `<t:${Math.floor(guild.createdTimestamp / 1000)}:R>` },
+                { name: 'owner', value: owner.user.tag, inline: true },
+                { name: 'members', value: `${guild.memberCount}`, inline: true },
+                { name: 'channels', value: `${guild.channels.cache.size}`, inline: true },
+                { name: 'roles', value: `${guild.roles.cache.size}`, inline: true },
+                { name: 'boosts', value: `${guild.premiumSubscriptionCount ?? 0}`, inline: true },
+                { name: 'created', value: `<t:${Math.floor(guild.createdTimestamp / 1000)}:r>` },
             )
-            .setFooter({ text: `ID: ${guild.id}` });
+            .setFooter({ text: `id: ${guild.id}` });
 
         await interaction.reply({ embeds: [embed] });
     },

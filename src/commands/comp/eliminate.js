@@ -5,10 +5,10 @@ const { getGame, setGame, announce } = require('../../handlers/competition.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('eliminate')
-        .setDescription('Eliminate a player from the competition.')
+        .setDescription('eliminate a player from the competition.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-        .addUserOption(o => o.setName('player').setDescription('The player to eliminate').setRequired(true))
-        .addStringOption(o => o.setName('reason').setDescription('Optional note (e.g. lowest average)')),
+        .addUserOption(o => o.setName('player').setDescription('the player to eliminate').setRequired(true))
+        .addStringOption(o => o.setName('reason').setDescription('optional note (e.g. lowest average)')),
 
     async execute(interaction) {
         const int = interaction;
@@ -19,7 +19,7 @@ module.exports = {
         const reason = int.options.getString('reason');
         const player = game.players[user.id];
 
-        if (!player || !player.active) return tools.warn("That player isn't an active competitor.");
+        if (!player || !player.active) return tools.warn("that player isn't an active competitor.");
 
         player.active = false;
         player.eliminatedRound = game.round;
@@ -28,12 +28,12 @@ module.exports = {
         const remaining = Object.values(game.players).filter(p => p.active).length;
 
         const embed = tools.createEmbed({
-            title: 'Eliminated',
+            title: 'eliminated',
             description: `<@${user.id}> has been eliminated in round ${game.round}.` + (reason ? `\n${reason}` : ''),
             footer: `${remaining} player${remaining !== 1 ? 's' : ''} remaining`
         });
         await announce(int.guild, game.announceChannel, { embeds: [embed] });
 
-        return int.reply({ content: `Eliminated <@${user.id}>. ${remaining} remaining.`, ephemeral: true });
+        return int.reply({ content: `eliminated <@${user.id}>. ${remaining} remaining.`, ephemeral: true });
     }
 };

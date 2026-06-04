@@ -34,6 +34,7 @@ function fetchTitle(url, depth = 0) {
     });
 }
 
+// strip platform suffixes / decode a few entities (patterns keep their case to match real titles)
 function cleanTitle(raw) {
     if (!raw) return null;
     return raw
@@ -51,8 +52,8 @@ function cleanTitle(raw) {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('submit')
-        .setDescription('Submit your song for the current round.')
-        .addStringOption(o => o.setName('song').setDescription('A Spotify, YouTube, or SoundCloud link').setRequired(true)),
+        .setDescription('submit your song for the current round.')
+        .addStringOption(o => o.setName('song').setDescription('a spotify, youtube, or soundcloud link').setRequired(true)),
 
     async execute(interaction) {
         const int = interaction;
@@ -60,16 +61,16 @@ module.exports = {
         const game = getGame(int.guild.id);
 
         const player = game.players[int.user.id];
-        if (!player || !player.active) return tools.warn("You're not an active player. Sign up with `/signup` first.");
-        if (!game.judgeChannel) return tools.warn("The host hasn't set a judges' channel yet.");
+        if (!player || !player.active) return tools.warn("you're not an active player. sign up with `/signup` first.");
+        if (!game.judgeChannel) return tools.warn("the host hasn't set a judges' channel yet.");
 
         const link = int.options.getString('song').trim();
-        if (!LINK_REGEX.test(link)) return tools.warn("Please submit a valid Spotify, YouTube, or SoundCloud link.");
+        if (!LINK_REGEX.test(link)) return tools.warn("please submit a valid spotify, youtube, or soundcloud link.");
 
         const isNew = !player.submissions[game.round];
 
         await int.deferReply({ ephemeral: true });
-        const title = cleanTitle(await fetchTitle(link)) || 'Untitled';
+        const title = cleanTitle(await fetchTitle(link)) || 'untitled';
 
         player.submissions[game.round] = { url: link, title, at: Date.now() };
         setGame(int.guild.id, game);
@@ -81,11 +82,11 @@ module.exports = {
         // post to the private judges' channel
         const embed = tools.createEmbed({
             author: { name: int.user.tag, iconURL: int.user.displayAvatarURL() },
-            title: `Round ${game.round} submission`,
+            title: `round ${game.round} submission`,
             fields: [
-                { name: 'Song', value: `[${title}](${link})` },
-                { name: 'Player', value: `<@${int.user.id}>`, inline: true },
-                { name: 'Theme', value: game.theme || 'Not set', inline: true },
+                { name: 'song', value: `[${title}](${link})` },
+                { name: 'player', value: `<@${int.user.id}>`, inline: true },
+                { name: 'theme', value: game.theme || 'not set', inline: true },
             ],
             footer: `${submittedCount}/${activePlayers.length} submitted`,
             timestamp: true
@@ -97,6 +98,6 @@ module.exports = {
             await announce(int.guild, game.announceChannel, `<@${int.user.id}> submitted for **${game.theme || 'this round'}**.`);
         }
 
-        return int.editReply({ content: `${isNew ? 'Submitted' : 'Updated your submission'}: **${title}** (round ${game.round}).` });
+        return int.editReply({ content: `${isNew ? 'submitted' : 'updated your submission'}: **${title}** (round ${game.round}).` });
     }
 };

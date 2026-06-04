@@ -4,22 +4,22 @@ const stickyManager = require('../../handlers/stickyManager.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('sticky')
-        .setDescription('Manage sticky messages in a channel')
+        .setDescription('manage sticky messages in a channel')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
         .addSubcommand(sub =>
             sub.setName('add')
-                .setDescription('Add or edit a sticky message in a channel')
+                .setDescription('add or edit a sticky message in a channel')
                 .addChannelOption(opt =>
                     opt.setName('channel')
-                        .setDescription('The channel to add the sticky to')
+                        .setDescription('the channel to add the sticky to')
                         .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
                         .setRequired(true)))
         .addSubcommand(sub =>
             sub.setName('remove')
-                .setDescription('Remove the sticky message from a channel')
+                .setDescription('remove the sticky message from a channel')
                 .addChannelOption(opt =>
                     opt.setName('channel')
-                        .setDescription('The channel to remove the sticky from')
+                        .setDescription('the channel to remove the sticky from')
                         .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
                         .setRequired(true))),
 
@@ -31,11 +31,11 @@ module.exports = {
             const existing = stickyManager.getSticky(channel.id);
             const modal = new ModalBuilder()
                 .setCustomId(`sticky_add_modal_${channel.id}`)
-                .setTitle(`Sticky message for #${channel.name.slice(0, 30)}`);
+                .setTitle(`sticky message for #${channel.name.slice(0, 30)}`);
 
             const input = new TextInputBuilder()
                 .setCustomId('sticky_content')
-                .setLabel('Message content')
+                .setLabel('message content')
                 .setStyle(TextInputStyle.Paragraph)
                 .setMaxLength(2000)
                 .setRequired(true);
@@ -50,7 +50,7 @@ module.exports = {
         if (sub === 'remove') {
             const sticky = stickyManager.getSticky(channel.id);
             if (!sticky) {
-                return interaction.reply({ content: `No sticky message in ${channel}.`, ephemeral: true });
+                return interaction.reply({ content: `no sticky message in ${channel}.`, ephemeral: true });
             }
 
             if (sticky.messageId) {
@@ -59,7 +59,7 @@ module.exports = {
             }
 
             stickyManager.removeSticky(channel.id);
-            await interaction.reply({ content: `Removed sticky from ${channel}.`, ephemeral: true });
+            await interaction.reply({ content: `removed sticky from ${channel}.`, ephemeral: true });
         }
     },
 
@@ -69,7 +69,7 @@ module.exports = {
 
         const channel = await interaction.guild.channels.fetch(channelId).catch(() => null);
         if (!channel) {
-            return interaction.reply({ content: 'Channel not found.', ephemeral: true });
+            return interaction.reply({ content: 'channel not found.', ephemeral: true });
         }
 
         await interaction.deferReply({ ephemeral: true });
@@ -81,15 +81,15 @@ module.exports = {
         }
 
         const msg = await channel.send(content).catch(err => {
-            console.error('Failed to send sticky:', err);
+            console.error('failed to send sticky:', err);
             return null;
         });
 
         if (!msg) {
-            return interaction.editReply({ content: `Failed to send sticky in ${channel}. Check my permissions.` });
+            return interaction.editReply({ content: `failed to send sticky in ${channel}. check my permissions.` });
         }
 
         stickyManager.setSticky(channelId, content, msg.id);
-        await interaction.editReply({ content: `Sticky ${existing ? 'updated' : 'added'} in ${channel}.` });
+        await interaction.editReply({ content: `sticky ${existing ? 'updated' : 'added'} in ${channel}.` });
     },
 };

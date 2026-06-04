@@ -5,9 +5,9 @@ const { getGame, setGame, announce } = require('../../handlers/competition.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('roundadvance')
-        .setDescription('Advance to the next round.')
+        .setDescription('advance to the next round.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-        .addStringOption(o => o.setName('theme').setDescription("The new round's theme (optional)")),
+        .addStringOption(o => o.setName('theme').setDescription("the new round's theme (optional)")),
 
     async execute(interaction) {
         const int = interaction;
@@ -23,13 +23,13 @@ module.exports = {
         const active = Object.entries(game.players).filter(([, p]) => p.active).map(([id]) => `<@${id}>`);
 
         const embed = tools.createEmbed({
-            title: `Round ${game.round} has begun!`,
+            title: `round ${game.round} has begun!`,
             description: (game.theme ? `**Theme:** ${game.theme}\n\n` : '') + `**${active.length}** players remain. Submit with \`/submit\`.`,
         });
         await announce(int.guild, game.announceChannel, { embeds: [embed] });
 
         return int.reply({
-            content: `Advanced to **round ${game.round}**.${newTheme ? ` Theme: **${newTheme}**.` : ''} ${active.length} active player${active.length !== 1 ? 's' : ''}.`,
+            content: `advanced to **round ${game.round}**.${newTheme ? ` Theme: **${newTheme}**.` : ''} ${active.length} active player${active.length !== 1 ? 's' : ''}.`,
             ephemeral: true
         });
     }

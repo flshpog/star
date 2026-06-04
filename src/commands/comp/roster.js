@@ -5,7 +5,7 @@ const { getGame } = require('../../handlers/competition.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('roster')
-        .setDescription('View the competition roster and standings.'),
+        .setDescription('view the competition roster and standings.'),
 
     async execute(interaction) {
         const int = interaction;
@@ -13,7 +13,7 @@ module.exports = {
         const game = getGame(int.guild.id);
 
         const entries = Object.entries(game.players);
-        if (!entries.length) return int.reply({ content: 'Nobody has signed up yet.', ephemeral: true });
+        if (!entries.length) return int.reply({ content: 'nobody has signed up yet.', ephemeral: true });
 
         const active = entries.filter(([, p]) => p.active);
         const eliminated = entries.filter(([, p]) => !p.active);
@@ -27,13 +27,13 @@ module.exports = {
             .map(([id, p]) => `<@${id}> — out round ${p.eliminatedRound ?? '?'}`);
 
         const fields = [
-            { name: `Active (${active.length})`, value: activeLines.join('\n') || 'None' },
+            { name: `active (${active.length})`, value: activeLines.join('\n') || 'none' },
         ];
-        if (elimLines.length) fields.push({ name: `Eliminated (${eliminated.length})`, value: elimLines.join('\n') });
+        if (elimLines.length) fields.push({ name: `eliminated (${eliminated.length})`, value: elimLines.join('\n') });
 
         const embed = tools.createEmbed({
-            author: { name: `Song of Luck — Round ${game.round}`, iconURL: int.guild.iconURL() },
-            description: game.theme ? `**Theme:** ${game.theme}` : 'No theme set yet.',
+            author: { name: `song of luck — round ${game.round}`, iconURL: int.guild.iconURL() },
+            description: game.theme ? `**Theme:** ${game.theme}` : 'no theme set yet.',
             fields
         });
         return int.reply({ embeds: [embed] });
