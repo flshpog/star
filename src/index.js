@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const { Client, GatewayIntentBits, Collection, Partials } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 
@@ -7,17 +7,21 @@ const Model = require('./classes/DatabaseModel');
 const { applyDefaults } = require('./database_schema');
 
 // Intents:
-//  - Guilds:        slash commands, roles, channels
-//  - GuildMessages: XP gain (counts that a message was sent) + sticky re-posting
-//  - GuildMembers:  PRIVILEGED — fires guildMemberAdd for autoroles + welcomes.
-//                   Must be enabled in the dev portal (Bot > Server Members Intent).
+//  - Guilds:                slash commands, roles, channels
+//  - GuildMessages:         XP gain (counts that a message was sent) + sticky re-posting
+//  - GuildMembers:          PRIVILEGED — fires guildMemberAdd for autoroles + welcomes.
+//                           Enable in the dev portal (Bot > Server Members Intent).
+//  - GuildMessageReactions: reaction roles (messageReactionAdd/Remove)
 // XP/stickies do NOT read message content, so no MessageContent intent.
+// Partials let reaction events fire on messages sent before the bot started.
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessageReactions,
     ],
+    partials: [Partials.Message, Partials.Channel, Partials.Reaction],
 });
 
 // JSON data store for the XP engine (servers.json). Same shape as sylvia.

@@ -24,15 +24,21 @@ module.exports = {
 
         // --- modal submissions ---
         if (interaction.isModalSubmit()) {
-            if (interaction.customId.startsWith('sticky_add_modal_')) {
-                const command = interaction.client.commands.get('sticky');
+            // route each modal to its command's handleModalSubmit
+            const modalRoutes = [
+                { prefix: 'sticky_add_modal_', command: 'sticky', label: 'sticky' },
+                { prefix: 'rr_add_modal', command: 'reactionrole', label: 'reaction role' },
+            ];
+            const route = modalRoutes.find(r => interaction.customId.startsWith(r.prefix));
+            if (route) {
+                const command = interaction.client.commands.get(route.command);
                 if (command?.handleModalSubmit) {
                     try {
                         await command.handleModalSubmit(interaction);
                     } catch (error) {
-                        console.error('Error handling sticky modal:', error);
+                        console.error(`Error handling ${route.label} modal:`, error);
                         if (!interaction.replied && !interaction.deferred) {
-                            await interaction.reply({ content: 'there was an error processing the sticky.', ephemeral: true }).catch(() => {});
+                            await interaction.reply({ content: `there was an error processing the ${route.label}.`, ephemeral: true }).catch(() => {});
                         }
                     }
                 }
