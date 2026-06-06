@@ -6,15 +6,17 @@ const path = require('path');
 const Model = require('./classes/DatabaseModel');
 const { applyDefaults } = require('./database_schema');
 
-// Only non-privileged intents are needed:
+// Intents:
 //  - Guilds:        slash commands, roles, channels
 //  - GuildMessages: XP gain (counts that a message was sent) + sticky re-posting
-// XP/stickies do NOT read message content, so no MessageContent intent; member
-// data comes from interaction payloads, so no GuildMembers intent either.
+//  - GuildMembers:  PRIVILEGED — fires guildMemberAdd for autoroles + welcomes.
+//                   Must be enabled in the dev portal (Bot > Server Members Intent).
+// XP/stickies do NOT read message content, so no MessageContent intent.
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildMembers,
     ],
 });
 

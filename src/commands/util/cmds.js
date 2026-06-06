@@ -8,6 +8,7 @@ const CATEGORIES = [
     ['comp', 'song of luck'],
     ['xp', 'xp'],
     ['mod', 'moderation'],
+    ['config', 'server setup'],
     ['util', 'utility'],
 ];
 
